@@ -53,3 +53,11 @@ a {
 span {
   background-color: var(--main-color);
 }
+.btn {
+  @apply inline-block px-6 py-3 rounded-md
+         bg-[var(--main-color)] text-white
+         font-semibold text-sm
+         transition duration-300
+         hover:bg-blue-700
+         hover:scale-105;
+}
