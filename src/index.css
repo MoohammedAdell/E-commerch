@@ -51,7 +51,7 @@ a {
   max-width: 1350px;
 }
 span {
-  background-color: var(--main-color);
+  color: var(--main-color);
 }
 .btn {
   @apply inline-block px-6 py-3 rounded-md

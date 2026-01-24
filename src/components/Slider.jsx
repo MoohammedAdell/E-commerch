@@ -31,7 +31,7 @@ function Slider() {
           pagination={{
             clickable: true,
           }}
-          navigation={true}
+      
           modules={[Autoplay, Pagination, Navigation]}
           onAutoplayTimeLeft={onAutoplayTimeLeft}
           className="w-full h-[200px] sm:h-[400px] relative  md:h-[450px] layout-container rounded-xl overflow-hidden"
