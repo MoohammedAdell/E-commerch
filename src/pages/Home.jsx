@@ -1,6 +1,7 @@
 import Slider from "../components/Slider";
 import SlideProduct from "../../src/components/slideProducts/SlideProduct";
 import { useEffect, useState } from "react";
+import { ScaleLoader } from "react-spinners";
 
 const categories = [
   "smartphones",
@@ -45,7 +46,17 @@ function Home() {
       <Slider />
 
       {loading ? (
-        <p>Loading ...</p>
+        <p className="text-center py-20 flex items-center justify-center">
+          <ScaleLoader
+            color="#4f88ff"
+            speedMultiplier={1}
+            barCount={4}
+            height={80}
+            loading
+            radius={41}
+            width={6}
+          />
+        </p>
       ) : (
         categories.map((category) => (
           <SlideProduct

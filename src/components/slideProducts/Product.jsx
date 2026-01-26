@@ -1,77 +1,99 @@
-import img from "../../img/iphone.png";
-import { IoMdStar } from "react-icons/io";
+import { IoMdStar, IoMdStarOutline } from "react-icons/io";
 import { IoCartSharp } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosShareAlt } from "react-icons/io";
-import { IoMdStarOutline } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 function Product({ item }) {
-  console.log(item);
-  const { title, images, price } = item;
+  const { title, images, price, id } = item;
+  const { cartItems, addItem } = useContext(CartContext);
+
+  const isInCart = cartItems.some((i) => i.id === id);
+
   return (
     <div
-      className="
-      group
-  relative 
-  w-full
-  max-w-[260px]
-  mx-auto
-  py-[25px] 
-  px-[15px] 
-  border 
-  border-[var(--border-color)] 
-  rounded-3xl
-  hover:border-[var(--main-color)]
-"
+      className={`
+        group relative w-full max-w-[260px] mx-auto
+        py-[25px] px-[15px]
+        border rounded-3xl
+        transition
+        ${
+          isInCart
+            ? "border-green-500 bg-green-50"
+            : "border-[var(--border-color)] hover:border-[var(--main-color)]"
+        }
+      `}
     >
-      {/* Image */}
-      <div className="relative h-[180px] px-[20px] flex items-center justify-center mb-[30px]">
-        <img src={images[0]} alt="img Product" className="h-[160px] w-auto" />
-      </div>
+      {/* ✔ In Cart Badge */}
+      {isInCart && (
+        <span className="absolute top-3 left-3  text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+          ✔ In Cart
+        </span>
+      )}
 
-      {/* Title */}
-      <p className="mb-[10px] text-lg text-[var(--main-color)] line-clamp-1">
-        {title}
-      </p>
+      <Link to={`/products/${id}`}>
+        {/* Image */}
+        <div className="relative h-[180px] px-[20px] flex items-center justify-center mb-[30px]">
+          <img
+            src={images[0]}
+            alt={title}
+            className="h-[160px] w-auto"
+          />
+        </div>
 
-      {/* Rating */}
-      <div className="flex pb-4 text-yellow-400 text-[18px]">
-        <IoMdStar />
-        <IoMdStar />
-        <IoMdStar />
-        <IoMdStar />
-        <IoMdStarOutline />
-      </div>
+        {/* Title */}
+        <p className="mb-[10px] text-lg text-[var(--main-color)] line-clamp-1">
+          {title}
+        </p>
 
-      {/* Price */}
-      <p className="text-[var(--main-color)] text-lg md:text-2xl">$ {price}</p>
+        {/* Rating */}
+        <div className="flex pb-4 text-yellow-400 text-[18px]">
+          <IoMdStar />
+          <IoMdStar />
+          <IoMdStar />
+          <IoMdStar />
+          <IoMdStarOutline />
+        </div>
+
+        {/* Price */}
+        <p className="text-[var(--main-color)] text-lg md:text-2xl">
+          $ {price}
+        </p>
+      </Link>
 
       {/* Actions */}
       <div
         className="
-          absolute
-          top-1/2
-          right-3
-          -translate-y-1/2
-          flex
-          flex-col
-          items-center
-          gap-6
-          text-2xl
-          opacity-0
-          translate-x-4
-          transition-all
-          duration-300
-          group-hover:opacity-100
-          group-hover:translate-x-0
+          absolute top-1/2 right-3 -translate-y-1/2
+          flex flex-col items-center gap-6 text-2xl
+          transition-all duration-300
+          group-hover:opacity-100 group-hover:translate-x-0
+          opacity-0 translate-x-4
         "
       >
-        <span className="cursor-pointer hover:text-[var(--main-color)]">
+        {/* Add to cart */}
+        <span
+          onClick={() => !isInCart && addItem(item)}
+          className={`
+            p-2 rounded-full transition
+            ${
+              isInCart
+                ? "bg-green-500 !text-white cursor-not-allowed"
+                : "cursor-pointer hover:bg-[var(--main-color)] hover:!text-white"
+            }
+          `}
+        >
           <IoCartSharp />
         </span>
-        <span className="cursor-pointer hover:!text-red-500">
+
+        {/* Wishlist */}
+        <span className="cursor-pointer hover:text-red-500">
           <FaRegHeart />
         </span>
+
+        {/* Share */}
         <span className="cursor-pointer hover:text-[var(--main-color)]">
           <IoIosShareAlt />
         </span>

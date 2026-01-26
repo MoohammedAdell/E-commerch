@@ -19,6 +19,7 @@
 body {
   background: var(--white-color);
   font-family: "Inter", sans-serif;
+  padding-top: 150px;
 }
 img {
   width: 100%;

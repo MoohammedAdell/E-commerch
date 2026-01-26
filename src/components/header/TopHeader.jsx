@@ -2,8 +2,12 @@ import Logo from "../../img/logo.png";
 import { Link } from "react-router-dom";
 import SearchBox from "./SearchBox";
 import HeaderIcons from "./HeaderIcons";
+import { CartContext } from "../context/CartContext";
+import { useContext } from "react";
 
 function TopHeader() {
+  const { cartItems } = useContext(CartContext);
+
   return (
     <div className="top-header ">
       <div className="layout-container ">
@@ -13,7 +17,7 @@ function TopHeader() {
           </Link>
 
           <SearchBox />
-          <HeaderIcons />
+          <HeaderIcons cartItems={cartItems} />
         </div>
       </div>
     </div>
