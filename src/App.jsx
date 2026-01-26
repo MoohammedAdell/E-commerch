@@ -4,6 +4,7 @@ import TopHeader from "./components/header/TopHeader";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/cart/Cart";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -12,6 +13,10 @@ function App() {
         <TopHeader />
         <BtmHeader />
       </header>
+      <Toaster
+  position="bottom-right"
+  reverseOrder={false}
+/>
 
       <Routes>
         <Route path="/" element={<Home />} />

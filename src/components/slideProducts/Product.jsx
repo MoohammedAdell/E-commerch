@@ -5,12 +5,52 @@ import { IoIosShareAlt } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import toast from "react-hot-toast";
 
 function Product({ item }) {
   const { title, images, price, id } = item;
   const { cartItems, addItem } = useContext(CartContext);
 
   const isInCart = cartItems.some((i) => i.id === id);
+
+ const addToCart = () => {
+  !isInCart && addItem(item);
+
+  toast.success(
+    <div className="flex items-center gap-4">
+      {/* Image */}
+      <img
+        src={images[0]}
+        alt={title}
+        className="w-12 h-12 object-contain"
+      />
+
+      {/* Content */}
+      <div className="flex flex-col gap-1">
+        <h5 className="text-sm font-semibold text-gray-800 line-clamp-1">
+          {title}
+        </h5>
+        <p className="text-xs text-gray-500">
+          Added to cart successfully
+        </p>
+
+        <Link
+          to="/cart"
+          className="mt-1 inline-block w-fit rounded-lg bg-black px-3 py-1 text-xs font-medium text-white transition hover:bg-gray-800"
+        >
+          View Cart
+        </Link>
+      </div>
+    </div>,
+    {
+      duration: 3500,
+      style: {
+        borderRadius: "16px",
+        padding: "14px",
+      },
+    }
+  );
+};
 
   return (
     <div
@@ -36,11 +76,7 @@ function Product({ item }) {
       <Link to={`/products/${id}`}>
         {/* Image */}
         <div className="relative h-[180px] px-[20px] flex items-center justify-center mb-[30px]">
-          <img
-            src={images[0]}
-            alt={title}
-            className="h-[160px] w-auto"
-          />
+          <img src={images[0]} alt={title} className="h-[160px] w-auto" />
         </div>
 
         {/* Title */}
@@ -75,7 +111,7 @@ function Product({ item }) {
       >
         {/* Add to cart */}
         <span
-          onClick={() => !isInCart && addItem(item)}
+          onClick={addToCart}
           className={`
             p-2 rounded-full transition
             ${
