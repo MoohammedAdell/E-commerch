@@ -1,5 +1,6 @@
 import { useContext, useState, useMemo } from "react";
 import { CartContext } from "../../components/context/CartContext";
+import PageTransitionEvent from '../../components/PageTransition'
 
 function Cart() {
   const { cartItems, removeItem } = useContext(CartContext);
@@ -32,7 +33,8 @@ function Cart() {
   }, [cartItems, quantities]);
 
   return (
-    <div className="layout-container py-10">
+   <PageTransitionEvent>
+     <div className="layout-container py-10">
       <h1 className="text-2xl font-bold mb-8">🛒 Order Summary</h1>
 
       {cartItems.length === 0 ? (
@@ -119,6 +121,7 @@ function Cart() {
         </div>
       )}
     </div>
+   </PageTransitionEvent>
   );
 }
 

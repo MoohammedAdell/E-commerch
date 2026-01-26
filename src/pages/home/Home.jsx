@@ -1,7 +1,8 @@
-import Slider from "../components/Slider";
-import SlideProduct from "../../src/components/slideProducts/SlideProduct";
+import Slider from "../../components/Slider";
+import SlideProduct from "../../components/slideProducts/SlideProduct";
 import { useEffect, useState } from "react";
 import { ScaleLoader } from "react-spinners";
+import PageTransition from "../../components/PageTransition";
 
 const categories = [
   "smartphones",
@@ -42,31 +43,33 @@ function Home() {
 
   console.log(products);
   return (
-    <div>
-      <Slider />
+    <PageTransition>
+      <div>
+        <Slider />
 
-      {loading ? (
-        <p className="text-center py-20 flex items-center justify-center">
-          <ScaleLoader
-            color="#4f88ff"
-            speedMultiplier={1}
-            barCount={4}
-            height={80}
-            loading
-            radius={41}
-            width={6}
-          />
-        </p>
-      ) : (
-        categories.map((category) => (
-          <SlideProduct
-            title={category.replace("-", " ")}
-            data={products[category]}
-            key={category}
-          />
-        ))
-      )}
-    </div>
+        {loading ? (
+          <p className="text-center py-20 flex items-center justify-center">
+            <ScaleLoader
+              color="#4f88ff"
+              speedMultiplier={1}
+              barCount={4}
+              height={80}
+              loading
+              radius={41}
+              width={6}
+            />
+          </p>
+        ) : (
+          categories.map((category) => (
+            <SlideProduct
+              title={category.replace("-", " ")}
+              data={products[category]}
+              key={category}
+            />
+          ))
+        )}
+      </div>
+    </PageTransition>
   );
 }
 

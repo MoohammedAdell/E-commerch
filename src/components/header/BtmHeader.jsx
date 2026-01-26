@@ -29,7 +29,6 @@ function BtmHeader() {
       .catch((err) => console.log(err));
   }, []);
 
-  // ✅ اقفل الـ dropdown لما ادوس برّه
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (categoryRef.current && !categoryRef.current.contains(e.target)) {
@@ -80,7 +79,7 @@ function BtmHeader() {
                   {gategorys.map((cat, i) => (
                     <Link
                       key={i}
-                      to={cat.slug}
+                      to={`/category/${cat.slug}`}
                       onClick={() => setShowGategory(false)}
                       className="p-2 text-sm hover:bg-gray-100 hover:text-[var(--main-color)]"
                     >

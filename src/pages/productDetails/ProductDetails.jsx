@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {  ScaleLoader } from "react-spinners";
-import ImgProducts from "../components/productDetails/ImgProducts";
-import RelatedProducts from "../components/productDetails/RelatedProducts";
-import DetailsProduct from '../components/productDetails/DetailsProduct'
-
+import { ScaleLoader } from "react-spinners";
+import ImgProducts from "../../components/productDetails/ImgProducts";
+import RelatedProducts from "../../components/productDetails/RelatedProducts";
+import DetailsProduct from "../../components/productDetails/DetailsProduct";
+import PageTransition from "../../components/PageTransition";
+import { CartContext } from "../../components/context/CartContext";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -57,8 +58,11 @@ function ProductDetails() {
     );
   if (!product) return <p>Product not found</p>;
 
+
+ 
+
   return (
-    <>
+    <PageTransition key={id}>
       <div className="layout-container py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Images */}
@@ -74,7 +78,7 @@ function ProductDetails() {
         product={product}
         relatedProduct={relatedProduct}
       />
-    </>
+    </PageTransition>
   );
 }
 

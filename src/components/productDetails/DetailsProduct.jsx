@@ -1,59 +1,83 @@
 import { useContext } from "react";
 import toast from "react-hot-toast";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { IoMdStar, IoMdStarOutline } from "react-icons/io";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { TiShoppingCart } from "react-icons/ti";
 
 function DetailsProduct({ product }) {
-  const { cartItems, addItem } = useContext(CartContext);
+  const { favorites, addToFav, removeIntoFav, cartItems, addItem } =
+    useContext(CartContext);
+
   const { title, images, id } = product;
+
   const isInCart = cartItems.some((i) => i.id === id);
+  const isInFav = favorites.some((i) => i.id === id);
 
   const addToCart = () => {
-    !isInCart && addItem(product);
+    if (isInCart) return;
 
-    !isInCart &&
-      toast.success(
-        <div className="flex items-center gap-4">
-          {/* Image */}
-          <img
-            src={images[0]}
-            alt={title}
-            className="w-12 h-12 object-contain"
-          />
+    addItem(product);
 
-          {/* Content */}
-          <div className="flex flex-col gap-1">
-            <h5 className="text-sm font-semibold text-gray-800 line-clamp-1">
-              {title}
-            </h5>
-            <p className="text-xs text-gray-500">Added to cart successfully</p>
+    toast.success(
+      <div className="flex items-center gap-4">
+        <img
+          src={images[0]}
+          alt={title}
+          className="w-12 h-12 object-contain"
+        />
 
-            <Link
-              to="/cart"
-              className="mt-1 inline-block w-fit rounded-lg bg-black px-3 py-1 text-xs font-medium text-white transition hover:bg-gray-800"
-            >
-              View Cart
-            </Link>
-          </div>
-        </div>,
-        {
-          duration: 3500,
-          style: {
-            borderRadius: "16px",
-            padding: "14px",
-          },
-        },
-      );
+        <div className="flex flex-col gap-1">
+          <h5 className="text-sm font-semibold line-clamp-1">{title}</h5>
+          <p className="text-xs text-gray-500">
+            Added to cart successfully
+          </p>
+
+          <Link
+            to="/cart"
+            className="text-xs text-blue-600 underline"
+          >
+            View Cart
+          </Link>
+        </div>
+      </div>
+    );
   };
+
+  const handelAppToFav = () => {
+    if (isInFav) {
+      removeIntoFav(product.id);
+      toast.error(`${title} removed from favorites 💔`);
+    } else {
+      addToFav(product);
+      toast.success(`${title} added to favorites ❤️`);
+    }
+  };
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-blue-600 mb-3">{product.title}</h1>
+    <div className="space-y-5">
+
+      {/* Title + Heart */}
+      <div className="flex items-start justify-between">
+        <h1 className="text-3xl font-bold text-blue-600">
+          {title}
+        </h1>
+
+        <span
+          onClick={handelAppToFav}
+          className={`cursor-pointer text-2xl transition ${
+            isInFav
+              ? "text-red-500 scale-110"
+              : "text-gray-400 hover:text-red-500"
+          }`}
+        >
+          {isInFav ? <FaHeart /> : <FaRegHeart />}
+        </span>
+      </div>
 
       {/* Rating */}
-      <div className="flex items-center gap-1 text-yellow-400 text-lg mb-3">
+      <div className="flex items-center gap-1 text-yellow-400 text-lg">
         <IoMdStar />
         <IoMdStar />
         <IoMdStar />
@@ -62,47 +86,52 @@ function DetailsProduct({ product }) {
       </div>
 
       {/* Price */}
-      <p className="text-2xl font-semibold mb-4">${product.price}</p>
+      <p className="text-2xl font-semibold text-gray-900">
+        ${product.price}
+      </p>
 
       {/* Info */}
-      <p className="mb-2 text-gray-700">
-        Availability:{" "}
-        <span className="!text-green-600 font-medium">In Stock</span>
-      </p>
+      <div className="space-y-1 text-gray-700">
+        <p>
+          Availability:
+          <span className="ml-2 text-green-600 font-medium">
+            In Stock
+          </span>
+        </p>
 
-      <p className="mb-2 text-gray-700">
-        Brand:{" "}
-        <span className="!text-blue-500 font-medium">{product.brand}</span>
-      </p>
+        <p>
+          Brand:
+          <span className="ml-2 text-blue-500 font-medium">
+            {product.brand}
+          </span>
+        </p>
+      </div>
 
       {/* Description */}
-      <p className="!text-gray-600 leading-relaxed mb-4">
+      <p className="text-gray-600 leading-relaxed">
         {product.description}
       </p>
 
-      {/* Stock warning */}
-      <p className="!text-blue-600 font-semibold mb-6">
-        Hurry Up! Only {product.stock} products left in stock.
+      {/* Stock */}
+      <p className="text-blue-600 font-semibold">
+        Hurry Up! Only {product.stock} products left.
       </p>
 
-      {/* Button */}
+      {/* Add To Cart */}
       <button
         onClick={addToCart}
         disabled={isInCart}
-        className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition
-    ${
-      !isInCart
-        ? "!bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-        : "bg-transparent border border-blue-600 text-blue-600 cursor-not-allowed"
-    }
-  `}
+        className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition
+          ${
+            !isInCart
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "border border-blue-600 text-blue-600 cursor-not-allowed"
+          }
+        `}
       >
         <TiShoppingCart size={20} />
-        {!isInCart ? "Add To Cart" : "Item in Cart"}
+        {isInCart ? "Item in Cart" : "Add To Cart"}
       </button>
-      <span className="cursor-pointer hover:!text-red-500 ">
-        <FaRegHeart scale={1} size={20} className="mt-4 " />
-      </span>
     </div>
   );
 }

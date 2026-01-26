@@ -1,6 +1,6 @@
 import { IoMdStar, IoMdStarOutline } from "react-icons/io";
 import { IoCartSharp } from "react-icons/io5";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { IoIosShareAlt } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
@@ -9,49 +9,54 @@ import toast from "react-hot-toast";
 
 function Product({ item }) {
   const { title, images, price, id } = item;
-  const { cartItems, addItem } = useContext(CartContext);
+  const { cartItems, addItem, favorites, addToFav, removeIntoFav } =
+    useContext(CartContext);
 
   const isInCart = cartItems.some((i) => i.id === id);
+  const isInFav = favorites.some((i) => i.id === id);
 
- const addToCart = () => {
-  !isInCart && addItem(item);
+  const addToCart = () => {
+    !isInCart && addItem(item);
 
-  toast.success(
-    <div className="flex items-center gap-4">
-      {/* Image */}
-      <img
-        src={images[0]}
-        alt={title}
-        className="w-12 h-12 object-contain"
-      />
+    toast.success(
+      <div className="flex items-center gap-4">
+        {/* Image */}
+        <img src={images[0]} alt={title} className="w-12 h-12 object-contain" />
 
-      {/* Content */}
-      <div className="flex flex-col gap-1">
-        <h5 className="text-sm font-semibold text-gray-800 line-clamp-1">
-          {title}
-        </h5>
-        <p className="text-xs text-gray-500">
-          Added to cart successfully
-        </p>
+        {/* Content */}
+        <div className="flex flex-col gap-1">
+          <h5 className="text-sm font-semibold text-gray-800 line-clamp-1">
+            {title}
+          </h5>
+          <p className="text-xs text-gray-500">Added to cart successfully</p>
 
-        <Link
-          to="/cart"
-          className="mt-1 inline-block w-fit rounded-lg bg-black px-3 py-1 text-xs font-medium text-white transition hover:bg-gray-800"
-        >
-          View Cart
-        </Link>
-      </div>
-    </div>,
-    {
-      duration: 3500,
-      style: {
-        borderRadius: "16px",
-        padding: "14px",
+          <Link
+            to="/cart"
+            className="mt-1 inline-block w-fit rounded-lg bg-black px-3 py-1 text-xs font-medium text-white transition hover:bg-gray-800"
+          >
+            View Cart
+          </Link>
+        </div>
+      </div>,
+      {
+        duration: 3500,
+        style: {
+          borderRadius: "16px",
+          padding: "14px",
+        },
       },
-    }
-  );
-};
+    );
+  };
 
+  const handelAppToFav = () => {
+    if (isInFav) {
+      removeIntoFav(item.id);
+      toast.error(`${title} removed from favorites 💔`);
+    } else {
+      addToFav(item);
+      toast.success(`${title} added to favorites ❤️`);
+    }
+  };
   return (
     <div
       className={`
@@ -125,8 +130,14 @@ function Product({ item }) {
         </span>
 
         {/* Wishlist */}
-        <span className="cursor-pointer hover:text-red-500">
-          <FaRegHeart />
+        <span
+          onClick={handelAppToFav}
+          className={`
+    cursor-pointer transition
+    ${isInFav ? "!text-red-500 " : "text-gray-400 hover:text-red-500"}
+  `}
+        >
+          {isInFav ? <FaHeart /> : <FaRegHeart />}
         </span>
 
         {/* Share */}

@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 function Icon({ children, count }) {
   return (
@@ -20,12 +22,15 @@ function Icon({ children, count }) {
 }
 
 function HeaderIcons({ cartItems }) {
+  const { favorites } = useContext(CartContext);
+
   return (
     <div className="flex gap-4">
-      {/* Wishlist (لسه static) */}
-      <Icon count={0}>
-        <FaRegHeart className="size-6" />
-      </Icon>
+      <Link to="/favorites">
+        <Icon count={favorites.length}>
+          <FaRegHeart className="size-6" />
+        </Icon>
+      </Link>
 
       {/* Cart */}
       <Link to="/cart">
