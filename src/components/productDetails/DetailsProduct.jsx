@@ -1,7 +1,53 @@
+import { useContext } from "react";
+import toast from "react-hot-toast";
 import { FaRegHeart } from "react-icons/fa";
 import { IoMdStar, IoMdStarOutline } from "react-icons/io";
+import { CartContext } from "../context/CartContext";
+import { Link } from "react-router-dom";
+import { TiShoppingCart } from "react-icons/ti";
 
 function DetailsProduct({ product }) {
+  const { cartItems, addItem } = useContext(CartContext);
+  const { title, images, id } = product;
+  const isInCart = cartItems.some((i) => i.id === id);
+
+  const addToCart = () => {
+    !isInCart && addItem(product);
+
+    !isInCart &&
+      toast.success(
+        <div className="flex items-center gap-4">
+          {/* Image */}
+          <img
+            src={images[0]}
+            alt={title}
+            className="w-12 h-12 object-contain"
+          />
+
+          {/* Content */}
+          <div className="flex flex-col gap-1">
+            <h5 className="text-sm font-semibold text-gray-800 line-clamp-1">
+              {title}
+            </h5>
+            <p className="text-xs text-gray-500">Added to cart successfully</p>
+
+            <Link
+              to="/cart"
+              className="mt-1 inline-block w-fit rounded-lg bg-black px-3 py-1 text-xs font-medium text-white transition hover:bg-gray-800"
+            >
+              View Cart
+            </Link>
+          </div>
+        </div>,
+        {
+          duration: 3500,
+          style: {
+            borderRadius: "16px",
+            padding: "14px",
+          },
+        },
+      );
+  };
   return (
     <div>
       <h1 className="text-3xl font-bold text-blue-600 mb-3">{product.title}</h1>
@@ -40,8 +86,19 @@ function DetailsProduct({ product }) {
       </p>
 
       {/* Button */}
-      <button className="!bg-blue-600 cursor-pointer text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
-        Add To Cart
+      <button
+        onClick={addToCart}
+        disabled={isInCart}
+        className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition
+    ${
+      !isInCart
+        ? "!bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+        : "bg-transparent border border-blue-600 text-blue-600 cursor-not-allowed"
+    }
+  `}
+      >
+        <TiShoppingCart size={20} />
+        {!isInCart ? "Add To Cart" : "Item in Cart"}
       </button>
       <span className="cursor-pointer hover:!text-red-500 ">
         <FaRegHeart scale={1} size={20} className="mt-4 " />
