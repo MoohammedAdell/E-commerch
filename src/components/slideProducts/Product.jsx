@@ -81,7 +81,7 @@ function Product({ item }) {
       <Link to={`/products/${id}`}>
         {/* Image */}
         <div className="relative h-[180px] px-[20px] flex items-center justify-center mb-[30px]">
-          <img src={images[0]} alt={title} className="h-[160px] w-auto" />
+          <img src={images[0]} alt={title} className="h-[140px] w-auto" />
         </div>
 
         {/* Title */}

@@ -10,6 +10,11 @@ import { AnimatePresence } from "framer-motion";
 import CategoryPage from "./pages/categoryPage/CategoryPage";
 import SearchResults from "./pages/search/SearchResults";
 import Favorites from "./pages/favorites/Favorites";
+import Footer from "./components/Footer";
+import About from "./pages/about/About";
+import Blog from "./pages/blog/Blog";
+import Contact from "./pages/contact/Contact";
+import PageNotFound from "./pages/pageNotFound/PageNotFound";
 
 function App() {
   return (
@@ -23,12 +28,17 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
+        <Footer />
       </AnimatePresence>
     </>
   );
