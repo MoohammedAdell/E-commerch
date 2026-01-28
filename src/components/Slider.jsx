@@ -6,6 +6,9 @@ import "swiper/css/pagination";
 
 import { Autoplay, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
+import banner1 from "../img/banner_Hero1.jpg";
+import banner2 from "../img/banner_Hero2.jpg";
+import banner3 from "../img/banner_Hero3.jpg";
 
 function Slider() {
   const progressCircle = useRef(null);
@@ -17,11 +20,7 @@ function Slider() {
     progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
   };
 
-  const slides = [
-    "/src/img/banner_Hero1.jpg",
-    "/src/img/banner_Hero2.jpg",
-    "/src/img/banner_Hero3.jpg",
-  ];
+  const slides = [banner1, banner2, banner3];
 
   return (
     <div className="my-6 lg:my-10">
@@ -35,13 +34,14 @@ function Slider() {
         pagination={{ clickable: true }}
         modules={[Autoplay, Pagination]}
         onAutoplayTimeLeft={onAutoplayTimeLeft}
-className="
+        className="
   w-full
   sm:max-w-[1000px]
   sm:mx-auto
   rounded-none sm:rounded-2xl
   overflow-hidden
-"      >
+"
+      >
         {slides.map((img, i) => (
           <SwiperSlide key={i} className="relative">
             {/* Image */}
